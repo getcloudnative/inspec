@@ -80,3 +80,22 @@ describe 'cli command plugins' do
     outcome.stdout.must_include 'inspec meaningoflife'
   end
 end
+
+#=========================================================================================#
+#                                CLI Usage Messaging
+#=========================================================================================#
+describe 'plugin cli usage message integration' do
+  include FunctionalHelper
+
+  [' help', ''].each do |invocation|
+    it "includes v2 plugins in `inspec#{invocation}` output" do
+      outcome = inspec(invocation)
+      outcome.stderr.must_equal ''
+
+      # These are some subcommands provided by core v2 plugins
+      ['habitat', 'artifact'].each do |subcommand|
+        outcome.stdout.must_include('inspec ' + subcommand)
+      end
+    end
+  end
+end
